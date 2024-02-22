@@ -1,4 +1,4 @@
-package presentation
+package presentation.screens.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarDuration
@@ -35,23 +33,36 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import presentation.widgets.PrimaryButton
 import resources.Resources
 
 class LoginScreen : Screen {
     @Composable
     override fun Content() {
-        val screenModel = rememberScreenModel { LoginControllerScreenModel() }
-        return LoginScreenContent(screenModel)
+        val viewModel = rememberScreenModel { LoginViewModel() }
+        val uiState by viewModel.uiState.collectAsState()
+
+        return LoginScreenContent(
+            uiState = uiState,
+            event = viewModel.event,
+            onEmailTextChanged = viewModel::onTextEmailChange,
+            onPasswordTextChanged = viewModel::onTextPasswordChange,
+            onLoginClick = viewModel::onLogin
+        )
     }
 }
 
 @Composable
-internal fun LoginScreenContent(screenModel: LoginControllerScreenModel) {
-    val state by screenModel.state.collectAsState()
+internal fun LoginScreenContent(
+    uiState: LoginUIState,
+    event: SharedFlow<Event>,
+    onEmailTextChanged: (String) -> Unit,
+    onPasswordTextChanged: (String) -> Unit,
+    onLoginClick: () -> Unit,
+) {
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
 
@@ -70,44 +81,41 @@ internal fun LoginScreenContent(screenModel: LoginControllerScreenModel) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    LaunchedEffect(Unit){
-                        scope.launch {
-                            screenModel.event.collectLatest {
-                                snackBarHostState.showSnackbar(
-                                    message = it.message,
-                                    duration = SnackbarDuration.Short
-                                )
-                            }
-                        }
-                    }
-
-                    setupLayout(
-                        state = state,
-                        onEmailTextChanged = {
-                            screenModel.onTextEmailChange(it)
-                        },
-                        onPasswordTextChanged = {
-                            screenModel.onTextPasswordChange(it)
-                        },
-                        screenModel = screenModel
+                    Form(
+                        uiState = uiState,
+                        onEmailTextChanged = onEmailTextChanged,
+                        onPasswordTextChanged = onPasswordTextChanged,
+                        onLoginClick = onLoginClick
                     )
                 }
-                if (state.isLoading) {
+                if (uiState.isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
             }
-        })
+        }
+    )
+
+    LaunchedEffect(Unit) {
+        scope.launch {
+            event.collectLatest {
+                snackBarHostState.showSnackbar(
+                    message = it.message,
+                    duration = SnackbarDuration.Short
+                )
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun setupLayout(
-    state: LoginState,
+private fun Form(
+    uiState: LoginUIState,
     onEmailTextChanged: (String) -> Unit,
     onPasswordTextChanged: (String) -> Unit,
-    screenModel: LoginControllerScreenModel
+    onLoginClick: () -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val reusableModifierTextField = Modifier
@@ -126,30 +134,29 @@ private fun setupLayout(
     )
     TextField(
         modifier = reusableModifierTextField,
-        value = state.textEmail,
-        isError = state.isErrorEmail,
+        value = uiState.textEmail,
+        isError = uiState.isErrorEmail,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         onValueChange = onEmailTextChanged,
         label = { Text(Resources.String.EMAIL) },
     )
     TextField(
         modifier = reusableModifierTextField,
-        value = state.textPassword,
-        isError = state.isErrorPassword,
+        value = uiState.textPassword,
+        isError = uiState.isErrorPassword,
         onValueChange = onPasswordTextChanged,
         label = { Text(Resources.String.PASSWORD) },
         visualTransformation = PasswordVisualTransformation(),
     )
-    Button(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 48.dp),
-        shape = CircleShape,
+
+    PrimaryButton(
+        title = Resources.String.LOGIN,
         onClick = {
-            screenModel.onLogin()
+            onLoginClick()
             keyboardController?.hide()
         },
-    ) {
-        Text(Resources.String.LOGIN)
-    }
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 48.dp)
+    )
 }
