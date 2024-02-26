@@ -1,4 +1,4 @@
-package presentation
+package presentation.screens.login
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import resources.Resources
 
-data class LoginState(
+data class LoginUIState(
     val isLoading: Boolean = false,
     val textEmail: String = "",
     val textPassword: String = "",
@@ -21,16 +21,16 @@ data class LoginState(
     val isErrorPassword: Boolean = false
 )
 
-sealed class Event(val message : String) {
+sealed class Event(val message: String) {
     data object Success : Event(message = Resources.String.SUCCESSFUL)
     data object Error : Event(message = Resources.String.FAILED)
 }
 
-class LoginControllerScreenModel(
+class LoginViewModel(
     private val repository: LoginRepository = LoginRepositoryImpl()
 ) : ScreenModel {
-    private val _state = MutableStateFlow(LoginState())
-    val state: StateFlow<LoginState>
+    private val _state = MutableStateFlow(LoginUIState())
+    val uiState: StateFlow<LoginUIState>
         get() = _state
 
     private val _event = MutableSharedFlow<Event>()
@@ -64,10 +64,10 @@ class LoginControllerScreenModel(
             //Just simulated long time to show loading
             delay(1000)
 
-            val isValid = isValidEmail(state.value.textEmail)
-                    && isValidPassword(state.value.textPassword)
+            val isValid = isValidEmail(uiState.value.textEmail)
+                    && isValidPassword(uiState.value.textPassword)
             if (isValid) {
-                repository.postLogin(state.value.textEmail, state.value.textPassword)
+                repository.postLogin(uiState.value.textEmail, uiState.value.textPassword)
                 _event.emit(Event.Success)
             } else {
                 _event.emit(Event.Error)
