@@ -5,9 +5,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import data.LoginRepository
 import data.LoginRepositoryImpl
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -18,27 +16,24 @@ data class LoginUIState(
     val textEmail: String = "",
     val textPassword: String = "",
     val isErrorEmail: Boolean = false,
-    val isErrorPassword: Boolean = false
+    val isErrorPassword: Boolean = false,
+    val loginResult: LoginResult? = null
 )
 
-sealed class Event(val message: String) {
-    data object Success : Event(message = Resources.String.SUCCESSFUL)
-    data object Error : Event(message = Resources.String.FAILED)
+sealed class LoginResult(val message: String) {
+    data object Success : LoginResult(message = Resources.String.SUCCESSFUL)
+    data object Error : LoginResult(message = Resources.String.FAILED)
 }
 
 class LoginViewModel(
     private val repository: LoginRepository = LoginRepositoryImpl()
 ) : ScreenModel {
-    private val _state = MutableStateFlow(LoginUIState())
+    private val _uiState = MutableStateFlow(LoginUIState())
     val uiState: StateFlow<LoginUIState>
-        get() = _state
-
-    private val _event = MutableSharedFlow<Event>()
-    val event: SharedFlow<Event>
-        get() = _event
+        get() = _uiState
 
     fun onTextEmailChange(email: String) {
-        _state.update {
+        _uiState.update {
             it.copy(
                 textEmail = email,
                 isErrorEmail = false
@@ -47,7 +42,7 @@ class LoginViewModel(
     }
 
     fun onTextPasswordChange(password: String) {
-        _state.update {
+        _uiState.update {
             it.copy(
                 textPassword = password,
                 isErrorPassword = false
@@ -57,7 +52,7 @@ class LoginViewModel(
 
     fun onLogin() {
         screenModelScope.launch {
-            _state.update {
+            _uiState.update {
                 it.copy(isLoading = true)
             }
 
@@ -66,16 +61,28 @@ class LoginViewModel(
 
             val isValid = isValidEmail(uiState.value.textEmail)
                     && isValidPassword(uiState.value.textPassword)
-            if (isValid) {
+
+            val loginResult = if (isValid) {
                 repository.postLogin(uiState.value.textEmail, uiState.value.textPassword)
-                _event.emit(Event.Success)
+                LoginResult.Success
             } else {
-                _event.emit(Event.Error)
+                LoginResult.Error
             }
 
-            _state.update {
-                it.copy(isLoading = false)
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    loginResult = loginResult
+                )
             }
+        }
+    }
+
+    fun onLoginResultReset() {
+        _uiState.update {
+            it.copy(
+                loginResult = null
+            )
         }
     }
 

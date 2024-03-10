@@ -19,7 +19,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -33,9 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import presentation.widgets.PrimaryButton
 import resources.Resources
 
@@ -47,10 +43,10 @@ class LoginScreen : Screen {
 
         return LoginScreenContent(
             uiState = uiState,
-            event = viewModel.event,
             onEmailTextChanged = viewModel::onTextEmailChange,
             onPasswordTextChanged = viewModel::onTextPasswordChange,
-            onLoginClick = viewModel::onLogin
+            onLoginClick = viewModel::onLogin,
+            onLoginResultReset = viewModel::onLoginResultReset
         )
     }
 }
@@ -58,12 +54,11 @@ class LoginScreen : Screen {
 @Composable
 internal fun LoginScreenContent(
     uiState: LoginUIState,
-    event: SharedFlow<Event>,
     onEmailTextChanged: (String) -> Unit,
     onPasswordTextChanged: (String) -> Unit,
     onLoginClick: () -> Unit,
+    onLoginResultReset: () -> Unit,
 ) {
-    val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -97,14 +92,13 @@ internal fun LoginScreenContent(
         }
     )
 
-    LaunchedEffect(Unit) {
-        scope.launch {
-            event.collectLatest {
-                snackBarHostState.showSnackbar(
-                    message = it.message,
-                    duration = SnackbarDuration.Short
-                )
-            }
+    LaunchedEffect(uiState.loginResult) {
+        uiState.loginResult?.let { loginResult ->
+            snackBarHostState.showSnackbar(
+                message = loginResult.message,
+                duration = SnackbarDuration.Short
+            )
+            onLoginResultReset()
         }
     }
 }
