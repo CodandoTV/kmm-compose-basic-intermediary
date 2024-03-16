@@ -33,10 +33,11 @@ class LoginViewModel(
         get() = _uiState
 
     fun onTextEmailChange(email: String) {
+        val isEmailValid = isValidEmail(email)
         _uiState.update {
             it.copy(
                 textEmail = email,
-                isErrorEmail = false
+                isErrorEmail = isEmailValid.not()
             )
         }
     }
