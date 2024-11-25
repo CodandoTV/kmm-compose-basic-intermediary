@@ -20,7 +20,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
@@ -30,35 +29,16 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.core.model.rememberScreenModel
-import cafe.adriel.voyager.core.screen.Screen
 import presentation.widgets.PrimaryButton
 import resources.Resources
 
-class LoginScreen : Screen {
-    @Composable
-    override fun Content() {
-        val viewModel = rememberScreenModel { LoginViewModel() }
-        val uiState by viewModel.uiState.collectAsState()
-
-        return LoginScreenContent(
-            uiState = uiState,
-            onEmailTextChanged = viewModel::onTextEmailChange,
-            onPasswordTextChanged = viewModel::onTextPasswordChange,
-            onLoginClick = viewModel::onLogin,
-            onLoginResultReset = viewModel::onLoginResultReset
-        )
-    }
-}
-
 @Composable
-internal fun LoginScreenContent(
-    uiState: LoginUIState,
-    onEmailTextChanged: (String) -> Unit,
-    onPasswordTextChanged: (String) -> Unit,
-    onLoginClick: () -> Unit,
-    onLoginResultReset: () -> Unit,
-) {
+fun LoginScreen() {
+    val viewModel = remember {
+        LoginViewModel()
+    }
+    val uiState by viewModel.uiState.collectAsState()
+
     val snackBarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -78,9 +58,9 @@ internal fun LoginScreenContent(
                 ) {
                     Form(
                         uiState = uiState,
-                        onEmailTextChanged = onEmailTextChanged,
-                        onPasswordTextChanged = onPasswordTextChanged,
-                        onLoginClick = onLoginClick
+                        onEmailTextChanged = viewModel::onTextEmailChange,
+                        onPasswordTextChanged = viewModel::onTextPasswordChange,
+                        onLoginClick = viewModel::onLogin
                     )
                 }
                 if (uiState.isLoading) {
@@ -98,12 +78,11 @@ internal fun LoginScreenContent(
                 message = loginResult.message,
                 duration = SnackbarDuration.Short
             )
-            onLoginResultReset()
+            viewModel.onLoginResultReset()
         }
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun Form(
     uiState: LoginUIState,

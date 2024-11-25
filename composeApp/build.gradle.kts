@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.serialization)
 }
 
 kotlin {
@@ -40,8 +41,6 @@ kotlin {
             implementation(libs.ktor.client)
             implementation(libs.ktor.negotiation)
             implementation(libs.ktor.logging)
-            implementation(libs.voyager.navigation)
-            implementation(libs.voyager.screen.model)
             implementation(compose.components.resources)
             implementation(libs.lifecycle.viewmodel.compose)
             implementation(libs.navigation.compose)

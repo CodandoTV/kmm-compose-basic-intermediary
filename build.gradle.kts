@@ -6,5 +6,5 @@ plugins {
     alias(libs.plugins.jetbrainsCompose) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.compose.compiler) apply false
-    kotlin("plugin.serialization") version "1.9.21"
+    alias(libs.plugins.serialization) apply false
 }
