@@ -1,5 +1,3 @@
-import org.jetbrains.compose.ExperimentalComposeLibrary
-
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
@@ -28,7 +26,6 @@ kotlin {
     }
     
     sourceSets {
-        
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
@@ -45,8 +42,9 @@ kotlin {
             implementation(libs.ktor.logging)
             implementation(libs.voyager.navigation)
             implementation(libs.voyager.screen.model)
-            @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
+            implementation(libs.lifecycle.viewmodel.compose)
+            implementation(libs.navigation.compose)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
