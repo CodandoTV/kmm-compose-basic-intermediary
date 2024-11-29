@@ -3,10 +3,16 @@ package presentation.screens.forgotpassword
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -18,6 +24,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import presentation.widgets.PrimaryButton
 import resources.Resources
 
@@ -26,16 +34,28 @@ class ForgotPasswordScreen : Screen {
     @Composable
     override fun Content() {
         val viewModel = remember { ForgotPasswordViewModel() }
+        val navigator = LocalNavigator.currentOrThrow
 
         ForgotPasswordScreenContent(
-            onForgotPassword = viewModel::onForgotPassword
+            onForgotPassword = viewModel::onForgotPassword,
+            onBackEvent = navigator::pop
         )
     }
 }
 
 @Composable
-fun ForgotPasswordScreenContent(onForgotPassword: () -> Unit) {
+fun ForgotPasswordScreenContent(onForgotPassword: () -> Unit, onBackEvent: () -> Unit) {
     Scaffold(
+        topBar = {
+            TopAppBar(title = {}, actions = {
+                IconButton(onClick = onBackEvent, modifier = Modifier.size(58.dp)) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+            })
+        },
         bottomBar = {
             PrimaryButton(
                 modifier = Modifier
