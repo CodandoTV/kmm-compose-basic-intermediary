@@ -47,7 +47,7 @@ class ForgotPasswordScreen : Screen {
 fun ForgotPasswordScreenContent(onForgotPassword: () -> Unit, onBackEvent: () -> Unit) {
     Scaffold(
         topBar = {
-            TopAppBar(title = {}, actions = {
+            TopAppBar(title = {}, navigationIcon = {
                 IconButton(onClick = onBackEvent, modifier = Modifier.size(58.dp)) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
