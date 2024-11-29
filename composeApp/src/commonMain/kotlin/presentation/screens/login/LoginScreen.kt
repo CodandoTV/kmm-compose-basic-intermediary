@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
@@ -32,6 +33,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
+import presentation.screens.forgotpassword.ForgotPasswordScreen
 import presentation.widgets.PrimaryButton
 import resources.Resources
 
@@ -60,8 +64,38 @@ internal fun LoginScreenContent(
     onLoginResultReset: () -> Unit,
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    val navigator = LocalNavigator.currentOrThrow
 
     Scaffold(
+        bottomBar = {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 48.dp)
+            ) {
+                PrimaryButton(
+                    title = Resources.String.LOGIN,
+                    onClick = {
+                        onLoginClick()
+                        keyboardController?.hide()
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+
+                OutlinedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    content = {
+                        Text(Resources.String.FORGOT_PASSWORD)
+                    },
+                    onClick = {
+                        navigator.push(ForgotPasswordScreen())
+                    }
+                )
+            }
+        },
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState)
         },
@@ -80,7 +114,6 @@ internal fun LoginScreenContent(
                         uiState = uiState,
                         onEmailTextChanged = onEmailTextChanged,
                         onPasswordTextChanged = onPasswordTextChanged,
-                        onLoginClick = onLoginClick
                     )
                 }
                 if (uiState.isLoading) {
@@ -103,15 +136,12 @@ internal fun LoginScreenContent(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun Form(
     uiState: LoginUIState,
     onEmailTextChanged: (String) -> Unit,
     onPasswordTextChanged: (String) -> Unit,
-    onLoginClick: () -> Unit,
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
     val reusableModifierTextField = Modifier
         .padding(horizontal = 24.dp)
         .fillMaxWidth()
@@ -141,16 +171,5 @@ private fun Form(
         onValueChange = onPasswordTextChanged,
         label = { Text(Resources.String.PASSWORD) },
         visualTransformation = PasswordVisualTransformation(),
-    )
-
-    PrimaryButton(
-        title = Resources.String.LOGIN,
-        onClick = {
-            onLoginClick()
-            keyboardController?.hide()
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 48.dp)
     )
 }

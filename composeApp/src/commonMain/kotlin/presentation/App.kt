@@ -8,8 +8,6 @@ import presentation.screens.login.LoginScreen
 @Composable
 fun AppTheme() {
     MaterialTheme {
-        Navigator(
-            LoginScreen()
-        )
+        Navigator(LoginScreen())
     }
 }
