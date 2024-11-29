@@ -38,7 +38,7 @@ import resources.Resources
 class LoginScreen : Screen {
     @Composable
     override fun Content() {
-        val viewModel = rememberScreenModel { LoginViewModel() }
+        val viewModel = remember { LoginViewModel() }
         val uiState by viewModel.uiState.collectAsState()
 
         return LoginScreenContent(

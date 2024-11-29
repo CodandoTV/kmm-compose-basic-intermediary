@@ -47,6 +47,7 @@ kotlin {
             implementation(libs.voyager.screen.model)
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
+            implementation(libs.lifecycle.viewmodel.compose)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
