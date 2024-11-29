@@ -21,7 +21,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
@@ -31,33 +30,32 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.core.model.rememberScreenModel
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
-import presentation.screens.forgotpassword.ForgotPasswordScreen
+import androidx.navigation.NavController
+import presentation.NavigationRoutes
 import presentation.widgets.PrimaryButton
 import resources.Resources
 
-class LoginScreen : Screen {
-    @Composable
-    override fun Content() {
-        val viewModel = remember { LoginViewModel() }
-        val uiState by viewModel.uiState.collectAsState()
+@Composable
+fun LoginScreen(navController: NavController) {
+    val viewModel = remember { LoginViewModel() }
+    val uiState by viewModel.uiState.collectAsState()
 
-        return LoginScreenContent(
-            uiState = uiState,
-            onEmailTextChanged = viewModel::onTextEmailChange,
-            onPasswordTextChanged = viewModel::onTextPasswordChange,
-            onLoginClick = viewModel::onLogin,
-            onLoginResultReset = viewModel::onLoginResultReset
-        )
-    }
+    LoginScreenContent(
+        uiState = uiState,
+        onEmailTextChanged = viewModel::onTextEmailChange,
+        onPasswordTextChanged = viewModel::onTextPasswordChange,
+        onLoginClick = viewModel::onLogin,
+        onLoginResultReset = viewModel::onLoginResultReset,
+        onGoToForgotPassword = {
+            navController.navigate(NavigationRoutes.ForgotPassword)
+        }
+    )
 }
 
 @Composable
 internal fun LoginScreenContent(
     uiState: LoginUIState,
+    onGoToForgotPassword: () -> Unit,
     onEmailTextChanged: (String) -> Unit,
     onPasswordTextChanged: (String) -> Unit,
     onLoginClick: () -> Unit,
@@ -65,8 +63,6 @@ internal fun LoginScreenContent(
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     val keyboardController = LocalSoftwareKeyboardController.current
-
-    val navigator = LocalNavigator.currentOrThrow
 
     Scaffold(
         bottomBar = {
@@ -90,9 +86,7 @@ internal fun LoginScreenContent(
                     content = {
                         Text(Resources.String.FORGOT_PASSWORD)
                     },
-                    onClick = {
-                        navigator.push(ForgotPasswordScreen())
-                    }
+                    onClick = onGoToForgotPassword
                 )
             }
         },

@@ -23,24 +23,18 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
+import androidx.navigation.NavController
 import presentation.widgets.PrimaryButton
 import resources.Resources
 
-class ForgotPasswordScreen : Screen {
+@Composable
+fun ForgotPasswordScreen(navController: NavController) {
+    val viewModel = remember { ForgotPasswordViewModel() }
 
-    @Composable
-    override fun Content() {
-        val viewModel = remember { ForgotPasswordViewModel() }
-        val navigator = LocalNavigator.currentOrThrow
-
-        ForgotPasswordScreenContent(
-            onForgotPassword = viewModel::onForgotPassword,
-            onBackEvent = navigator::pop
-        )
-    }
+    ForgotPasswordScreenContent(
+        onForgotPassword = viewModel::onForgotPassword,
+        onBackEvent = navController::popBackStack
+    )
 }
 
 @Composable
