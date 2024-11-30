@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
@@ -20,7 +21,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
@@ -30,38 +30,66 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.core.model.rememberScreenModel
-import cafe.adriel.voyager.core.screen.Screen
+import androidx.navigation.NavController
+import presentation.NavigationRoutes
 import presentation.widgets.PrimaryButton
 import resources.Resources
 
-class LoginScreen : Screen {
-    @Composable
-    override fun Content() {
-        val viewModel = rememberScreenModel { LoginViewModel() }
-        val uiState by viewModel.uiState.collectAsState()
+@Composable
+fun LoginScreen(navController: NavController) {
+    val viewModel = remember { LoginViewModel() }
+    val uiState by viewModel.uiState.collectAsState()
 
-        return LoginScreenContent(
-            uiState = uiState,
-            onEmailTextChanged = viewModel::onTextEmailChange,
-            onPasswordTextChanged = viewModel::onTextPasswordChange,
-            onLoginClick = viewModel::onLogin,
-            onLoginResultReset = viewModel::onLoginResultReset
-        )
-    }
+    LoginScreenContent(
+        uiState = uiState,
+        onEmailTextChanged = viewModel::onTextEmailChange,
+        onPasswordTextChanged = viewModel::onTextPasswordChange,
+        onLoginClick = viewModel::onLogin,
+        onLoginResultReset = viewModel::onLoginResultReset,
+        onGoToForgotPassword = {
+            navController.navigate(NavigationRoutes.ForgotPassword)
+        }
+    )
 }
 
 @Composable
 internal fun LoginScreenContent(
     uiState: LoginUIState,
+    onGoToForgotPassword: () -> Unit,
     onEmailTextChanged: (String) -> Unit,
     onPasswordTextChanged: (String) -> Unit,
     onLoginClick: () -> Unit,
     onLoginResultReset: () -> Unit,
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(
+        bottomBar = {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 48.dp)
+            ) {
+                PrimaryButton(
+                    title = Resources.String.LOGIN,
+                    onClick = {
+                        onLoginClick()
+                        keyboardController?.hide()
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+
+                OutlinedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    content = {
+                        Text(Resources.String.FORGOT_PASSWORD)
+                    },
+                    onClick = onGoToForgotPassword
+                )
+            }
+        },
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState)
         },
@@ -80,7 +108,6 @@ internal fun LoginScreenContent(
                         uiState = uiState,
                         onEmailTextChanged = onEmailTextChanged,
                         onPasswordTextChanged = onPasswordTextChanged,
-                        onLoginClick = onLoginClick
                     )
                 }
                 if (uiState.isLoading) {
@@ -103,15 +130,12 @@ internal fun LoginScreenContent(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun Form(
     uiState: LoginUIState,
     onEmailTextChanged: (String) -> Unit,
     onPasswordTextChanged: (String) -> Unit,
-    onLoginClick: () -> Unit,
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
     val reusableModifierTextField = Modifier
         .padding(horizontal = 24.dp)
         .fillMaxWidth()
@@ -141,16 +165,5 @@ private fun Form(
         onValueChange = onPasswordTextChanged,
         label = { Text(Resources.String.PASSWORD) },
         visualTransformation = PasswordVisualTransformation(),
-    )
-
-    PrimaryButton(
-        title = Resources.String.LOGIN,
-        onClick = {
-            onLoginClick()
-            keyboardController?.hide()
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 48.dp)
     )
 }

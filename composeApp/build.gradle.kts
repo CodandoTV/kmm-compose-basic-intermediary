@@ -43,10 +43,10 @@ kotlin {
             implementation(libs.ktor.client)
             implementation(libs.ktor.negotiation)
             implementation(libs.ktor.logging)
-            implementation(libs.voyager.navigation)
-            implementation(libs.voyager.screen.model)
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
+            implementation(libs.lifecycle.viewmodel.compose)
+            implementation(libs.navigation.compose)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

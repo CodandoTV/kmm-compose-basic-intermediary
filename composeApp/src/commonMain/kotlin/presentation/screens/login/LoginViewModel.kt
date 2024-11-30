@@ -1,7 +1,7 @@
 package presentation.screens.login
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import data.LoginRepository
 import data.LoginRepositoryImpl
 import kotlinx.coroutines.delay
@@ -27,7 +27,7 @@ sealed class LoginResult(val message: String) {
 
 class LoginViewModel(
     private val repository: LoginRepository = LoginRepositoryImpl()
-) : ScreenModel {
+) : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUIState())
     val uiState: StateFlow<LoginUIState>
         get() = _uiState
@@ -52,7 +52,7 @@ class LoginViewModel(
     }
 
     fun onLogin() {
-        screenModelScope.launch {
+        viewModelScope.launch {
             _uiState.update {
                 it.copy(isLoading = true)
             }
