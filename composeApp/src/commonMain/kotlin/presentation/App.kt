@@ -7,8 +7,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import presentation.screens.forgotpassword.ForgotPasswordScreen
 import presentation.screens.login.LoginScreen
+import presentation.screens.splash.SplashScreen
 
 object NavigationRoutes {
+    const val Splash = "splash"
     const val Login = "login"
     const val ForgotPassword = "forgotpassword"
 }
@@ -20,8 +22,12 @@ fun AppTheme() {
     MaterialTheme {
         NavHost(
             navController = navController,
-            startDestination = NavigationRoutes.Login
+            startDestination = NavigationRoutes.Splash
         ) {
+            composable(NavigationRoutes.Splash) {
+               SplashScreen(navController)
+            }
+
             composable(NavigationRoutes.Login) {
                 LoginScreen(navController)
             }
