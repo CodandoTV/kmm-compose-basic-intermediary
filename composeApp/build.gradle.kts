@@ -47,6 +47,9 @@ kotlin {
             implementation(compose.components.resources)
             implementation(libs.lifecycle.viewmodel.compose)
             implementation(libs.navigation.compose)
+
+            api(libs.datastore)
+            api(libs.datastore.preferences)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

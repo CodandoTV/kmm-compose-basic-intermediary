@@ -30,14 +30,19 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.navigation.NavController
 import presentation.NavigationRoutes
 import presentation.widgets.PrimaryButton
 import resources.Resources
 
 @Composable
-fun LoginScreen(navController: NavController) {
-    val viewModel = remember { LoginViewModel() }
+fun LoginScreen(
+    navController: NavController,
+    dataStore: DataStore<Preferences>
+) {
+    val viewModel = remember { LoginViewModel(dataStore = dataStore) }
     val uiState by viewModel.uiState.collectAsState()
 
     LoginScreenContent(
@@ -48,6 +53,9 @@ fun LoginScreen(navController: NavController) {
         onLoginResultReset = viewModel::onLoginResultReset,
         onGoToForgotPassword = {
             navController.navigate(NavigationRoutes.ForgotPassword)
+        },
+        onGoToHome = {
+            navController.navigate(NavigationRoutes.Home)
         }
     )
 }
@@ -60,6 +68,7 @@ internal fun LoginScreenContent(
     onPasswordTextChanged: (String) -> Unit,
     onLoginClick: () -> Unit,
     onLoginResultReset: () -> Unit,
+    onGoToHome: () -> Unit
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -126,6 +135,12 @@ internal fun LoginScreenContent(
                 duration = SnackbarDuration.Short
             )
             onLoginResultReset()
+        }
+    }
+
+    LaunchedEffect(uiState.goToHome) {
+        if (uiState.goToHome) {
+            onGoToHome()
         }
     }
 }

@@ -19,14 +19,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.navigation.NavController
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun SplashScreen(
-    navController: NavController
+    navController: NavController,
+    dataStore: DataStore<Preferences>
 ) {
-    val viewModel = remember { SplashViewModel() }
+    val viewModel = remember { SplashViewModel(dataStore) }
     val uiState by viewModel.uiState.collectAsState()
 
     when (uiState.appState) {
