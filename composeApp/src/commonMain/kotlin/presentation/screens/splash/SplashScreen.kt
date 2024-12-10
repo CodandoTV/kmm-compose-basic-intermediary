@@ -38,7 +38,7 @@ fun SplashScreen(
         }
 
         AppState.Logged -> {
-            navController.navigate("home")
+            navController.navigate("feed")
         }
 
         AppState.Unlogged -> {

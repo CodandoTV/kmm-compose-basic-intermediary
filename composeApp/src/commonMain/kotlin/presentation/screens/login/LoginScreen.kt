@@ -55,7 +55,7 @@ fun LoginScreen(
             navController.navigate(NavigationRoutes.ForgotPassword)
         },
         onGoToHome = {
-            navController.navigate(NavigationRoutes.Home)
+            navController.navigate(NavigationRoutes.Feed)
         }
     )
 }
