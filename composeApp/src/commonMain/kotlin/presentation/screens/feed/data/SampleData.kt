@@ -11,7 +11,7 @@ val samplePosts = listOf(
         likes = 10,
         comments = 2,
         time = "2023-10-01T10:00:00Z",
-        user = User(id = "1", name = "João Silva", username = "joaosilva", avatar = "avatar1.png"),
+        user = User(id = "1", name = "João Silva", username = "joaosilva", avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_1.png"),
         images = listOf("image1.png", "image2.png")
     ),
     Post(
@@ -20,7 +20,7 @@ val samplePosts = listOf(
         likes = 20,
         comments = 4,
         time = "2023-10-02T11:00:00Z",
-        user = User(id = "2", name = "Maria Oliveira", username = "mariaoliveira", avatar = "avatar2.png"),
+        user = User(id = "2", name = "Maria Oliveira", username = "mariaoliveira", avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_2.png"),
         images = listOf("image3.png", "image4.png")
     ),
     Post(
@@ -29,7 +29,7 @@ val samplePosts = listOf(
         likes = 30,
         comments = 6,
         time = "2023-10-03T12:00:00Z",
-        user = User(id = "3", name = "Carlos Souza", username = "carlossouza", avatar = "avatar3.png"),
+        user = User(id = "3", name = "Carlos Souza", username = "carlossouza", avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_3.png"),
         images = listOf("image5.png", "image6.png")
     ),
     Post(
@@ -38,7 +38,7 @@ val samplePosts = listOf(
         likes = 40,
         comments = 8,
         time = "2023-10-04T13:00:00Z",
-        user = User(id = "4", name = "Ana Pereira", username = "anapereira", avatar = "avatar4.png"),
+        user = User(id = "4", name = "Ana Pereira", username = "anapereira", avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_5.png"),
         images = listOf("image7.png", "image8.png")
     ),
     Post(
@@ -47,7 +47,7 @@ val samplePosts = listOf(
         likes = 50,
         comments = 10,
         time = "2023-10-05T14:00:00Z",
-        user = User(id = "5", name = "Pedro Lima", username = "pedrolima", avatar = "avatar5.png"),
+        user = User(id = "5", name = "Pedro Lima", username = "pedrolima", avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_6.png"),
         images = listOf("image9.png", "image10.png")
     )
 )

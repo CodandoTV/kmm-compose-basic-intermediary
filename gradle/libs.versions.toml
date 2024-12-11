@@ -20,6 +20,7 @@ moko-resources="0.23.0"
 lifecycle-viewmodel-compose-version = "2.8.0"
 navigation-compose-version = "2.7.0-alpha07"
 datastore = "1.1.1"
+coil = "3.0.0-alpha06"
 
 
 [libraries]
@@ -48,6 +49,13 @@ navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-co
 # DataStore
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+
+# Coil
+coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
+coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

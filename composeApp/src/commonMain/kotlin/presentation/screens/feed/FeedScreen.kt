@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +46,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil3.compose.AsyncImage
 import presentation.screens.feed.model.Post
 
 @Composable
@@ -106,7 +108,13 @@ private fun PostHeader(post: Post) {
                     .size(40.dp)
                     .clip(CircleShape)
                     .background(Color.Gray)
-            )
+            ) {
+                AsyncImage(
+                    post.user.avatar,
+                    contentDescription = "Avatar",
+                    contentScale = ContentScale.Crop,
+                )
+            }
         }
     )
 }
