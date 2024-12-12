@@ -33,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -76,7 +77,7 @@ fun ItemPost(post: Post) {
     PostHeader(post = post)
     Spacer(modifier = Modifier.height(8.dp))
     if (post.images.size > 1) {
-        PostMedia(post = post.images)
+        PostMedia(images = post.images)
     }
     PostActions(post = post)
 }
@@ -121,10 +122,10 @@ private fun PostHeader(post: Post) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun PostMedia(post: List<String>) {
+private fun PostMedia(images: List<String>) {
 
     val pagerState = rememberPagerState(pageCount = {
-        post.size
+        images.size
     })
 
     HorizontalPager(state = pagerState) { page ->
@@ -132,12 +133,29 @@ private fun PostMedia(post: List<String>) {
             modifier = Modifier
                 .background(Color.Gray)
                 .fillMaxWidth()
-                .height(200.dp)
+                .height(200.dp),
+            contentAlignment = Alignment.TopEnd
         ) {
-            Text(
-                text = "Imagem: $page",
-                modifier = Modifier.fillMaxWidth()
+            AsyncImage(
+                images[page],
+                contentDescription = "Post image",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
             )
+
+            Box(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .clip(CircleShape)
+                    .background(Color.Black.copy(alpha = 0.5f))
+            ) {
+                Text(
+                    text = "$page / ${images.size}",
+                    color = Color.White,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(12.dp,8.dp),
+                )
+            }
         }
     }
 }

@@ -4,6 +4,16 @@ import presentation.screens.feed.model.Post
 import presentation.screens.feed.model.User
 
 
+val sampleImages = listOf(
+    "https://raw.githubusercontent.com/git-jr/sample-files/refs/heads/main/images/ai-generate/cachorro-grama.webp",
+    "https://raw.githubusercontent.com/git-jr/sample-files/refs/heads/main/images/ai-generate/cerejeira-neon-1.webp",
+    "https://raw.githubusercontent.com/git-jr/sample-files/refs/heads/main/images/ai-generate/cerejeira-neon-2.webp",
+    "https://raw.githubusercontent.com/git-jr/sample-files/refs/heads/main/images/ai-generate/londres-neon.webp",
+    "https://raw.githubusercontent.com/git-jr/sample-files/refs/heads/main/images/ai-generate/mesa-cafe-notebook.webp",
+    "https://raw.githubusercontent.com/git-jr/sample-files/refs/heads/main/images/ai-generate/sushi.webp",
+    "https://raw.githubusercontent.com/git-jr/sample-files/refs/heads/main/images/ai-generate/yoga-parque.webp",
+)
+
 val samplePosts = listOf(
     Post(
         id = "1",
@@ -11,8 +21,13 @@ val samplePosts = listOf(
         likes = 10,
         comments = 2,
         time = "2023-10-01T10:00:00Z",
-        user = User(id = "1", name = "João Silva", username = "joaosilva", avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_1.png"),
-        images = listOf("image1.png", "image2.png")
+        user = User(
+            id = "1",
+            name = "João Silva",
+            username = "joaosilva",
+            avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_1.png"
+        ),
+        images = sampleImages.take(2)
     ),
     Post(
         id = "2",
@@ -20,8 +35,13 @@ val samplePosts = listOf(
         likes = 20,
         comments = 4,
         time = "2023-10-02T11:00:00Z",
-        user = User(id = "2", name = "Maria Oliveira", username = "mariaoliveira", avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_2.png"),
-        images = listOf("image3.png", "image4.png")
+        user = User(
+            id = "2",
+            name = "Maria Oliveira",
+            username = "mariaoliveira",
+            avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_2.png"
+        ),
+        images = sampleImages.takeLast(2)
     ),
     Post(
         id = "3",
@@ -29,8 +49,13 @@ val samplePosts = listOf(
         likes = 30,
         comments = 6,
         time = "2023-10-03T12:00:00Z",
-        user = User(id = "3", name = "Carlos Souza", username = "carlossouza", avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_3.png"),
-        images = listOf("image5.png", "image6.png")
+        user = User(
+            id = "3",
+            name = "Carlos Souza",
+            username = "carlossouza",
+            avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_3.png"
+        ),
+        images = sampleImages.take(2).reversed()
     ),
     Post(
         id = "4",
@@ -38,8 +63,13 @@ val samplePosts = listOf(
         likes = 40,
         comments = 8,
         time = "2023-10-04T13:00:00Z",
-        user = User(id = "4", name = "Ana Pereira", username = "anapereira", avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_5.png"),
-        images = listOf("image7.png", "image8.png")
+        user = User(
+            id = "4",
+            name = "Ana Pereira",
+            username = "anapereira",
+            avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_5.png"
+        ),
+        images = sampleImages.takeLast(3)
     ),
     Post(
         id = "5",
@@ -47,7 +77,12 @@ val samplePosts = listOf(
         likes = 50,
         comments = 10,
         time = "2023-10-05T14:00:00Z",
-        user = User(id = "5", name = "Pedro Lima", username = "pedrolima", avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_6.png"),
-        images = listOf("image9.png", "image10.png")
+        user = User(
+            id = "5",
+            name = "Pedro Lima",
+            username = "pedrolima",
+            avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_6.png"
+        ),
+        images = sampleImages.takeLast(4)
     )
 )
