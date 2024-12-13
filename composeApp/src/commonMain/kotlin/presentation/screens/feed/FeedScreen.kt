@@ -4,6 +4,7 @@ package presentation.screens.feed
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -48,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
+import presentation.NavigationRoutes.PostDetail
 import presentation.screens.feed.model.Post
 
 @Composable
@@ -55,29 +57,39 @@ fun FeedScreen(navController: NavController) {
     val viewModel = remember { FeedViewModel() }
     val uiState by viewModel.uiState.collectAsState()
 
-    FeedScreenContent(uiState)
+    FeedScreenContent(
+        uiState = uiState,
+        onOpenPost = { postId ->
+            navController.navigate("$PostDetail/$postId")
+        }
+    )
 }
 
 @Composable
 fun FeedScreenContent(
-    uiState: FeedUiState
+    uiState: FeedUiState,
+    onOpenPost: (String) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
     ) {
         items(uiState.posts) { post ->
-            ItemPost(post)
+            ItemPost(post) {
+                onOpenPost(post.id)
+            }
         }
     }
 }
 
 @Composable
-fun ItemPost(post: Post) {
+fun ItemPost(post: Post, onClick: () -> Unit = {}) {
     PostHeader(post = post)
     Spacer(modifier = Modifier.height(8.dp))
     if (post.images.size > 1) {
-        PostMedia(images = post.images)
+        PostMedia(images = post.images) {
+            onClick()
+        }
     }
     PostActions(post = post)
 }
@@ -122,7 +134,10 @@ private fun PostHeader(post: Post) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun PostMedia(images: List<String>) {
+private fun PostMedia(
+    images: List<String>,
+    onClick: () -> Unit
+) {
 
     val pagerState = rememberPagerState(pageCount = {
         images.size
@@ -133,7 +148,8 @@ private fun PostMedia(images: List<String>) {
             modifier = Modifier
                 .background(Color.Gray)
                 .fillMaxWidth()
-                .height(200.dp),
+                .height(200.dp)
+                .clickable { onClick() },
             contentAlignment = Alignment.TopEnd
         ) {
             AsyncImage(
@@ -153,13 +169,12 @@ private fun PostMedia(images: List<String>) {
                     text = "$page / ${images.size}",
                     color = Color.White,
                     fontSize = 12.sp,
-                    modifier = Modifier.padding(12.dp,8.dp),
+                    modifier = Modifier.padding(12.dp, 8.dp),
                 )
             }
         }
     }
 }
-
 
 @Composable
 private fun PostActions(post: Post) {

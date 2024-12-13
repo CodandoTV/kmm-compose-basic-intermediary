@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import presentation.screens.feed.FeedScreen
 import presentation.screens.forgotpassword.ForgotPasswordScreen
 import presentation.screens.login.LoginScreen
+import presentation.screens.postdetail.PostDetailScreen
 import presentation.screens.splash.SplashScreen
 
 object NavigationRoutes {
@@ -17,6 +18,10 @@ object NavigationRoutes {
     const val Login = "login"
     const val ForgotPassword = "forgotpassword"
     const val Feed = "feed"
+    const val PostDetail = "postDetail"
+    const val PostIdArgument = "postId"
+    const val PostDetailFullPath = "${PostDetail}/{$PostIdArgument}"
+
 }
 
 @Composable
@@ -31,7 +36,7 @@ fun AppTheme(
             startDestination = NavigationRoutes.Splash
         ) {
             composable(NavigationRoutes.Splash) {
-               SplashScreen(navController, dataStore)
+                SplashScreen(navController, dataStore)
             }
 
             composable(NavigationRoutes.Login) {
@@ -44,6 +49,10 @@ fun AppTheme(
 
             composable(NavigationRoutes.Feed) {
                 FeedScreen(navController)
+            }
+
+            composable(NavigationRoutes.PostDetailFullPath) {
+                PostDetailScreen(navController)
             }
         }
     }

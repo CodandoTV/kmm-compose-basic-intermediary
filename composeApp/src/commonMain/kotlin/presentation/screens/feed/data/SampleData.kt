@@ -1,5 +1,6 @@
 package presentation.screens.feed.data
 
+import presentation.screens.feed.model.Comment
 import presentation.screens.feed.model.Post
 import presentation.screens.feed.model.User
 
@@ -86,3 +87,40 @@ val samplePosts = listOf(
         images = sampleImages.takeLast(4)
     )
 )
+
+val sampleComments = listOf(
+    Comment(
+        id = "1",
+        user = User(
+            id = "5",
+            name = "Pedro Lima",
+            username = "pedrolima",
+            avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_6.png"
+        ),
+        content = "Isso melhorou muito meu dia!",
+        time = "2023-10-01T10:00:00Z"
+    ),
+    Comment(
+        id = "2",
+        user = User(
+            id = "3",
+            name = "Carlos Souza",
+            username = "carlossouza",
+            avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_3.png"
+        ),
+        content = "kkkkkkkk, realmente!",
+        time = "2023-10-02T11:00:00Z"
+    ),
+    Comment(
+        id = "3",
+        user = User(
+            id = "4",
+            name = "Ana Pereira",
+            username = "anapereira",
+            avatar = "https://raw.githubusercontent.com/git-jr/sample-files/main/profile%20pics/netflix_profile_pic_5.png"
+        ),
+        content = "Com certeza!",
+        time = "2023-10-03T12:00:00Z"
+    ),
+
+    )

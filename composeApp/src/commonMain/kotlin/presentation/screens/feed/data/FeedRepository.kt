@@ -6,6 +6,7 @@ import presentation.screens.feed.model.Post
 interface FeedRepository {
     suspend fun postPost(post: Post)
     suspend fun getPosts(): List<Post>
+    suspend fun getPost(postId: String): Post
 }
 
 class FeedRepositoryImpl(
@@ -21,5 +22,9 @@ class FeedRepositoryImpl(
 
     override suspend fun getPosts(): List<Post> {
         return _posts.value
+    }
+
+    override suspend fun getPost(postId: String): Post {
+        return _posts.value.first { it.id == postId }
     }
 }
