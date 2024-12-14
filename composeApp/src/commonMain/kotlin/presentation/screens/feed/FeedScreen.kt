@@ -166,7 +166,7 @@ private fun PostMedia(
                     .background(Color.Black.copy(alpha = 0.5f))
             ) {
                 Text(
-                    text = "$page / ${images.size}",
+                    text = "${page+1} / ${images.size}",
                     color = Color.White,
                     fontSize = 12.sp,
                     modifier = Modifier.padding(12.dp, 8.dp),

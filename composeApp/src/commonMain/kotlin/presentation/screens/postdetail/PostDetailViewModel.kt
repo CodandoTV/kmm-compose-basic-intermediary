@@ -8,8 +8,10 @@ import kotlinx.coroutines.launch
 import presentation.screens.feed.data.FeedRepository
 import presentation.screens.feed.data.FeedRepositoryImpl
 import presentation.screens.feed.data.sampleComments
+import presentation.screens.feed.data.sampleUsers
 import presentation.screens.feed.model.Comment
 import presentation.screens.feed.model.Post
+import kotlin.random.Random
 
 
 data class PostDetailUiState(
@@ -35,5 +37,16 @@ class PostDetailViewModel(
         }
     }
 
-
+    fun addComment(comment: String) {
+        viewModelScope.launch {
+            val newComment = Comment(
+                id = sampleUsers[0].hashCode().toString(),
+                user = sampleUsers[0],
+                content = comment
+            )
+            _uiState.value = _uiState.value.copy(
+                comments = listOf(newComment) + _uiState.value.comments
+            )
+        }
+    }
 }
