@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import org.koin.compose.KoinContext
 import presentation.screens.forgotpassword.ForgotPasswordScreen
 import presentation.screens.login.LoginScreen
 
@@ -16,18 +17,19 @@ object NavigationRoutes {
 @Composable
 fun AppTheme() {
     val navController = rememberNavController()
+    KoinContext {
+        MaterialTheme {
+            NavHost(
+                navController = navController,
+                startDestination = NavigationRoutes.Login
+            ) {
+                composable(NavigationRoutes.Login) {
+                    LoginScreen(navController)
+                }
 
-    MaterialTheme {
-        NavHost(
-            navController = navController,
-            startDestination = NavigationRoutes.Login
-        ) {
-            composable(NavigationRoutes.Login) {
-                LoginScreen(navController)
-            }
-
-            composable(NavigationRoutes.ForgotPassword) {
-                ForgotPasswordScreen(navController)
+                composable(NavigationRoutes.ForgotPassword) {
+                    ForgotPasswordScreen(navController)
+                }
             }
         }
     }

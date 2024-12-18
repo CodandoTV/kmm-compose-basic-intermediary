@@ -5,7 +5,7 @@ interface LoginRepository {
 }
 
 class LoginRepositoryImpl(
-    private val service: LoginService = LoginServiceImpl()
+    private val service: LoginService
 ) : LoginRepository {
 
     override suspend fun postLogin(email: String, password: String) =

@@ -26,7 +26,7 @@ sealed class LoginResult(val message: String) {
 }
 
 class LoginViewModel(
-    private val repository: LoginRepository = LoginRepositoryImpl()
+    private val repository: LoginRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUIState())
     val uiState: StateFlow<LoginUIState>
