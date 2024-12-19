@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.21"
+    alias(libs.plugins.serialization)
 }
 
 kotlin {
@@ -15,7 +15,7 @@ kotlin {
             }
         }
     }
-
+    
     listOf(
         iosX64(),
         iosArm64(),
@@ -26,12 +26,13 @@ kotlin {
             isStatic = true
         }
     }
-
+    
     sourceSets {
-
+        
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -56,8 +57,11 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil)
 
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose.viewmodel)
         }
         iosMain.dependencies {
+            implementation(libs.koin.core)
             implementation(libs.ktor.client.darwin)
         }
     }

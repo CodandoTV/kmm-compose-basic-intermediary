@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.navigation.NavController
+import org.koin.compose.viewmodel.koinViewModel
 import presentation.NavigationRoutes
 import presentation.widgets.PrimaryButton
 import resources.Resources
@@ -40,9 +41,9 @@ import resources.Resources
 @Composable
 fun LoginScreen(
     navController: NavController,
-    dataStore: DataStore<Preferences>
+    dataStore: DataStore<Preferences>,
+    viewModel: LoginViewModel = koinViewModel()
 ) {
-    val viewModel = remember { LoginViewModel(dataStore = dataStore) }
     val uiState by viewModel.uiState.collectAsState()
 
     LoginScreenContent(

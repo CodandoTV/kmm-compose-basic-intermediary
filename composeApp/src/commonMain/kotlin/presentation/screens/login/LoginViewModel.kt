@@ -31,7 +31,7 @@ sealed class LoginResult(val message: String) {
 }
 
 class LoginViewModel(
-    private val repository: LoginRepository = LoginRepositoryImpl(),
+    private val repository: LoginRepository,
     private val dataStore: DataStore<Preferences>
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUIState())
