@@ -41,7 +41,6 @@ import resources.Resources
 @Composable
 fun LoginScreen(
     navController: NavController,
-    dataStore: DataStore<Preferences>,
     viewModel: LoginViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()

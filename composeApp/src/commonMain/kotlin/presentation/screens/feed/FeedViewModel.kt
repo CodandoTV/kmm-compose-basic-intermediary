@@ -16,7 +16,7 @@ data class FeedUiState(
 )
 
 class FeedViewModel(
-    private val feedRepository: FeedRepository = FeedRepositoryImpl(),
+    private val feedRepository: FeedRepository,
     private val shareManager: ShareManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(FeedUiState())

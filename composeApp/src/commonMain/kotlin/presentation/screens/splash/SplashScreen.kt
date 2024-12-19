@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -23,28 +24,26 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.navigation.NavController
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SplashScreen(
     navController: NavController,
-    dataStore: DataStore<Preferences>
+    viewModel: SplashViewModel = koinViewModel()
 ) {
-    val viewModel = remember { SplashViewModel(dataStore) }
     val uiState by viewModel.uiState.collectAsState()
 
-    when (uiState.appState) {
-        AppState.Loading -> {
-            LoadScreen()
-        }
-
-        AppState.Logged -> {
+    LaunchedEffect(uiState.appState) {
+        if(uiState.appState == AppState.Logged) {
             navController.navigate("feed")
         }
 
-        AppState.Unlogged -> {
+        if(uiState.appState == AppState.Unlogged) {
             navController.navigate("login")
         }
     }
+
+    LoadScreen()
 }
 
 @Composable

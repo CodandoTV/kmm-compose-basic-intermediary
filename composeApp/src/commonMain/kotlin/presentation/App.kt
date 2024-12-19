@@ -2,16 +2,13 @@ package presentation
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import presentation.screens.feed.FeedScreen
 import org.koin.compose.KoinContext
+import presentation.screens.feed.FeedScreen
 import presentation.screens.forgotpassword.ForgotPasswordScreen
 import presentation.screens.login.LoginScreen
-import presentation.screens.splash.SplashScreen
 import presentation.screens.postdetail.PostDetailScreen
 import presentation.screens.splash.SplashScreen
 
@@ -27,9 +24,7 @@ object NavigationRoutes {
 }
 
 @Composable
-fun AppTheme(
-    dataStore: DataStore<Preferences>
-) {
+fun AppTheme() {
     val navController = rememberNavController()
     KoinContext {
         MaterialTheme {
@@ -38,7 +33,7 @@ fun AppTheme(
                 startDestination = NavigationRoutes.Splash
             ) {
                 composable(NavigationRoutes.Splash) {
-                    SplashScreen(navController, dataStore)
+                    SplashScreen(navController)
                 }
 
                 composable(NavigationRoutes.Login) {
@@ -48,16 +43,15 @@ fun AppTheme(
                 composable(NavigationRoutes.ForgotPassword) {
                     ForgotPasswordScreen(navController)
                 }
-            }
 
-            composable(NavigationRoutes.Feed) {
-                FeedScreen(navController)
-            }
+                composable(NavigationRoutes.Feed) {
+                    FeedScreen(navController)
+                }
 
-            composable(NavigationRoutes.PostDetailFullPath) {
-                PostDetailScreen(navController)
+                composable(NavigationRoutes.PostDetailFullPath) {
+                    PostDetailScreen(navController)
+                }
             }
         }
     }
-}
 }

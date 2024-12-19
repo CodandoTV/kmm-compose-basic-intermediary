@@ -33,7 +33,6 @@ import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,12 +48,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
+import org.koin.compose.viewmodel.koinViewModel
 import presentation.NavigationRoutes.PostDetail
 import presentation.screens.feed.model.Post
 
 @Composable
-fun FeedScreen(navController: NavController) {
-    val viewModel = remember { FeedViewModel() }
+fun FeedScreen(
+    navController: NavController,
+    viewModel: FeedViewModel = koinViewModel()
+) {
     val uiState by viewModel.uiState.collectAsState()
 
     FeedScreenContent(
