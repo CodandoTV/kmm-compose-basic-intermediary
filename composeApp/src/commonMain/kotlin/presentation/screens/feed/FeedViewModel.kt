@@ -1,5 +1,6 @@
 package presentation.screens.feed
 
+import ShareManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,8 @@ data class FeedUiState(
 )
 
 class FeedViewModel(
-    private val feedRepository: FeedRepository = FeedRepositoryImpl()
+    private val feedRepository: FeedRepository = FeedRepositoryImpl(),
+    private val shareManager: ShareManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(FeedUiState())
     val uiState: StateFlow<FeedUiState>
@@ -36,5 +38,10 @@ class FeedViewModel(
             feedRepository.postPost(post)
             _uiState.value = _uiState.value.copy(posts = feedRepository.getPosts())
         }
+    }
+
+    fun onSharePost(post: Post) {
+        val postContent = "Check out this post: ${post.description}"
+        shareManager.shareContent(postContent)
     }
 }

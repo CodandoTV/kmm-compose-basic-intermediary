@@ -61,6 +61,9 @@ fun FeedScreen(navController: NavController) {
         uiState = uiState,
         onOpenPost = { postId ->
             navController.navigate("$PostDetail/$postId")
+        },
+        onShare = {
+            viewModel.onSharePost(it)
         }
     )
 }
@@ -68,22 +71,29 @@ fun FeedScreen(navController: NavController) {
 @Composable
 fun FeedScreenContent(
     uiState: FeedUiState,
-    onOpenPost: (String) -> Unit
+    onOpenPost: (String) -> Unit,
+    onShare: (Post) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
     ) {
         items(uiState.posts) { post ->
-            ItemPost(post) {
-                onOpenPost(post.id)
-            }
+            ItemPost(
+                post = post,
+                onClick = { onOpenPost(post.id) },
+                onShare = { onShare(post) }
+            )
         }
     }
 }
 
 @Composable
-fun ItemPost(post: Post, onClick: () -> Unit = {}) {
+fun ItemPost(
+    post: Post,
+    onClick: () -> Unit = {},
+    onShare: () -> Unit = {}
+) {
     PostHeader(post = post)
     Spacer(modifier = Modifier.height(8.dp))
     if (post.images.size > 1) {
@@ -91,7 +101,10 @@ fun ItemPost(post: Post, onClick: () -> Unit = {}) {
             onClick()
         }
     }
-    PostActions(post = post)
+    PostActions(
+        post = post,
+        onShare = onShare
+    )
 }
 
 @Composable
@@ -166,7 +179,7 @@ private fun PostMedia(
                     .background(Color.Black.copy(alpha = 0.5f))
             ) {
                 Text(
-                    text = "${page+1} / ${images.size}",
+                    text = "${page + 1} / ${images.size}",
                     color = Color.White,
                     fontSize = 12.sp,
                     modifier = Modifier.padding(12.dp, 8.dp),
@@ -177,7 +190,10 @@ private fun PostMedia(
 }
 
 @Composable
-private fun PostActions(post: Post) {
+private fun PostActions(
+    post: Post,
+    onShare: () -> Unit = {}
+) {
     Row(
         Modifier
             .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -214,6 +230,9 @@ private fun PostActions(post: Post) {
                     .size(24.dp)
                     .graphicsLayer {
                         rotationY = 180f
+                    }
+                    .clickable {
+                        onShare()
                     },
             )
         }
