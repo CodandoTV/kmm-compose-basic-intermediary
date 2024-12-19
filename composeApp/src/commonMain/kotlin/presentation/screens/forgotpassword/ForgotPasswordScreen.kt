@@ -24,13 +24,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import org.koin.compose.viewmodel.koinViewModel
 import presentation.widgets.PrimaryButton
 import resources.Resources
 
 @Composable
-fun ForgotPasswordScreen(navController: NavController) {
-    val viewModel = remember { ForgotPasswordViewModel() }
-
+fun ForgotPasswordScreen(
+    navController: NavController,
+    viewModel: ForgotPasswordViewModel = koinViewModel()
+) {
     ForgotPasswordScreenContent(
         onForgotPassword = viewModel::onForgotPassword,
         onBackEvent = navController::popBackStack

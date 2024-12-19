@@ -31,13 +31,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import org.koin.compose.viewmodel.koinViewModel
 import presentation.NavigationRoutes
 import presentation.widgets.PrimaryButton
 import resources.Resources
 
 @Composable
-fun LoginScreen(navController: NavController) {
-    val viewModel = remember { LoginViewModel() }
+fun LoginScreen(
+    navController: NavController,
+    viewModel: LoginViewModel = koinViewModel()
+) {
     val uiState by viewModel.uiState.collectAsState()
 
     LoginScreenContent(
