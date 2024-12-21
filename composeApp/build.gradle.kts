@@ -50,6 +50,9 @@ kotlin {
             implementation(libs.navigation.compose)
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
+
+            api(libs.datastore)
+            api(libs.datastore.preferences)
         }
 
         iosMain.dependencies {
