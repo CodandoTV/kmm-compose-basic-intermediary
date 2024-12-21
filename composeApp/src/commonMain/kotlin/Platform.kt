@@ -6,9 +6,9 @@ interface Platform {
 
 expect fun getPlatform(): Platform
 
-expect val preferenceModule: Module
+expect val platformModules: Module
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 expect class ShareManager {
-    fun share(shareContent: String)
+    fun shareText(shareContent: String)
 }

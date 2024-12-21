@@ -12,7 +12,7 @@ actual fun getPlatform(): Platform = AndroidPlatform()
 actual class ShareManager(
     private val context: Context
 ) {
-    actual fun share(shareContent: String) {
+    actual fun shareText(shareContent: String) {
         // Cria um intent para compartilhar o conteúdo
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"

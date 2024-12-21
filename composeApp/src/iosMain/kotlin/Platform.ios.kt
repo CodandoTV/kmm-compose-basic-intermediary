@@ -10,7 +10,7 @@ actual fun getPlatform(): Platform = IOSPlatform()
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class ShareManager {
-    actual fun share(shareContent: String) {
+    actual fun shareText(shareContent: String) {
         // Cria um array com os itens a serem compartilhados
         val itemsToShare = listOf(shareContent)
 

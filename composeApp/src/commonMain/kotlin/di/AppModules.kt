@@ -7,7 +7,7 @@ import data.LoginService
 import data.LoginServiceImpl
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-import preferenceModule
+import platformModules
 import presentation.screens.detail.PostDetailViewModel
 import presentation.screens.feed.FeedViewModel
 import presentation.screens.feed.data.FeedRepository
@@ -26,8 +26,8 @@ val viewModelModules = module {
     viewModel { ForgotPasswordViewModel() }
     viewModel { LoginViewModel(get(), get()) }
     viewModel { SplashViewModel(get()) }
-    viewModel { FeedViewModel(get()) }
+    viewModel { FeedViewModel(get(), get()) }
     viewModel { PostDetailViewModel(get()) }
 }
 
-val appModules = listOf(dataModules, viewModelModules, preferenceModule)
+val appModules = listOf(dataModules, viewModelModules, platformModules)
