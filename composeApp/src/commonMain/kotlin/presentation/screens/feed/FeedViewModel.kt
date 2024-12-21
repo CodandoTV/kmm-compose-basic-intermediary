@@ -14,7 +14,8 @@ data class FeedUiState(
 
 
 class FeedViewModel(
-    private val feedRepository: FeedRepository
+    private val feedRepository: FeedRepository,
+    private val shareManager: ShareManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(FeedUiState())
     val uiState = _uiState.asStateFlow()
@@ -28,6 +29,11 @@ class FeedViewModel(
             val posts = feedRepository.getPosts()
            _uiState.value = _uiState.value.copy(posts = posts)
         }
+    }
+
+    fun onSharePost(post: Post) {
+        val contentPost = "Dá uma olhada no post: ${post.description}"
+        shareManager.shareText(contentPost)
     }
 
 

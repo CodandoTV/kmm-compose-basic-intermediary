@@ -61,6 +61,9 @@ fun FeedScreen(
         uiState,
         openPost = { postId ->
             navController.navigate("${Detail}/$postId")
+        },
+        onSharePost = { post ->
+            viewModel.onSharePost(post)
         }
     )
 }
@@ -68,7 +71,8 @@ fun FeedScreen(
 @Composable
 private fun FeedScreenContent(
     uiState: FeedUiState,
-    openPost: (String) -> Unit = {}
+    openPost: (String) -> Unit = {},
+    onSharePost: (Post) -> Unit = {}
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -79,7 +83,9 @@ private fun FeedScreenContent(
                 onClick = {
                     openPost(it.id)
                 },
-                onShare = {}
+                onShare = {
+                    onSharePost(it)
+                }
             )
         }
     }
