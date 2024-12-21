@@ -7,6 +7,12 @@ import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSUserDomainMask
 import data.createDataStore
 import kotlinx.cinterop.ExperimentalForeignApi
+import org.koin.core.module.Module
+import org.koin.dsl.module
+
+actual val preferenceModule: Module = module {
+    single { createDataStore() }
+}
 
 @OptIn(ExperimentalForeignApi::class)
 fun createDataStore(): DataStore<Preferences> = createDataStore(

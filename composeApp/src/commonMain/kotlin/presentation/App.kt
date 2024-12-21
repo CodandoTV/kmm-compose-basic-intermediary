@@ -24,21 +24,7 @@ object NavigationRoutes {
 }
 
 @Composable
-fun AppTheme(
-    dataStore: DataStore<Preferences>
-) {
-    LaunchedEffect(Unit) {
-//        dataStore.edit {
-//            it[booleanPreferencesKey("isLogged")] = true
-//            it[stringPreferencesKey("sextou")] = "é claro que sim!"
-//        }
-
-        dataStore.data.first().let {
-            println("dataStore isLogged: ${it[booleanPreferencesKey("isLogged")]}")
-            println("dataStore sextou: ${it[stringPreferencesKey("sextou")]}")
-        }
-    }
-
+fun AppTheme() {
     val navController = rememberNavController()
     KoinContext {
         MaterialTheme {
