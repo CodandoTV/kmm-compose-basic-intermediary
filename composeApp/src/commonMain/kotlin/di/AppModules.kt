@@ -9,6 +9,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import presentation.screens.forgotpassword.ForgotPasswordViewModel
 import presentation.screens.login.LoginViewModel
+import presentation.screens.splash.SplashViewModel
 
 val dataModules = module {
     single<LoginService> { LoginServiceImpl(KtorApiClient.httpClient) }
@@ -18,6 +19,7 @@ val dataModules = module {
 val viewModelModules = module {
     viewModel { ForgotPasswordViewModel() }
     viewModel { LoginViewModel(get()) }
+    viewModel { SplashViewModel() }
 }
 
 val appModules = listOf(dataModules, viewModelModules)
