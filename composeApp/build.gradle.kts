@@ -53,6 +53,12 @@ kotlin {
 
             api(libs.datastore)
             api(libs.datastore.preferences)
+
+            implementation(libs.coil.network.ktor)
+            implementation(libs.coil.compose.core)
+            implementation(libs.coil.compose)
+            implementation(libs.coil)
+
         }
 
         iosMain.dependencies {
