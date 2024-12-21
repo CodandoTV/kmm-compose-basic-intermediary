@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.first
 import org.koin.compose.KoinContext
+import presentation.screens.detail.PostDetailScreen
 import presentation.screens.feed.FeedScreen
 import presentation.screens.forgotpassword.ForgotPasswordScreen
 import presentation.screens.login.LoginScreen
@@ -23,6 +24,9 @@ object NavigationRoutes {
     const val Login = "login"
     const val ForgotPassword = "forgotpassword"
     const val Splash = "splash"
+    const val Detail = "detail"
+    const val PostIdArgument = "postId"
+    const val PostDetailFullPath = "${Detail}/{$PostIdArgument}"
 }
 
 @Composable
@@ -40,6 +44,10 @@ fun AppTheme() {
 
                 composable(NavigationRoutes.Home) {
                     FeedScreen(navController)
+                }
+
+                composable(NavigationRoutes.PostDetailFullPath) {
+                    PostDetailScreen(navController)
                 }
 
                 composable(NavigationRoutes.Login) {

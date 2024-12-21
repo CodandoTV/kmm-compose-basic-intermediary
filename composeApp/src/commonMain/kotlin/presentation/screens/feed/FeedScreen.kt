@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import org.koin.compose.viewmodel.koinViewModel
+import presentation.NavigationRoutes.Detail
 import presentation.screens.feed.model.Post
 
 @Composable
@@ -56,18 +57,28 @@ fun FeedScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    FeedScreenContent(uiState)
+    FeedScreenContent(
+        uiState,
+        openPost = { postId ->
+            navController.navigate("${Detail}/$postId")
+        }
+    )
 }
 
 @Composable
-private fun FeedScreenContent(uiState: FeedUiState) {
+private fun FeedScreenContent(
+    uiState: FeedUiState,
+    openPost: (String) -> Unit = {}
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
     ) {
         items(uiState.posts) {
             ItemPost(
                 post = it,
-                onClick = {},
+                onClick = {
+                    openPost(it.id)
+                },
                 onShare = {}
             )
         }
