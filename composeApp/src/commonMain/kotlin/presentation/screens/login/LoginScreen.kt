@@ -53,6 +53,12 @@ fun LoginScreen(
             navController.navigate(NavigationRoutes.ForgotPassword)
         }
     )
+
+    LaunchedEffect(uiState.goToHome) {
+        if (uiState.goToHome) {
+            navController.navigate(NavigationRoutes.Home)
+        }
+    }
 }
 
 @Composable

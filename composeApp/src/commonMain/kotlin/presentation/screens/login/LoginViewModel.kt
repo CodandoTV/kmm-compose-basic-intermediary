@@ -21,7 +21,8 @@ data class LoginUIState(
     val textPassword: String = "",
     val isErrorEmail: Boolean = false,
     val isErrorPassword: Boolean = false,
-    val loginResult: LoginResult? = null
+    val loginResult: LoginResult? = null,
+    val goToHome: Boolean = false
 )
 
 sealed class LoginResult(val message: String) {
@@ -86,6 +87,11 @@ class LoginViewModel(
             if(loginResult is LoginResult.Success) {
                 dataStore.edit {
                     it[booleanPreferencesKey("isLogged")] = true
+                }
+                _uiState.update {
+                    it.copy(
+                        goToHome = true
+                    )
                 }
             }
 

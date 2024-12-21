@@ -13,11 +13,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.first
 import org.koin.compose.KoinContext
+import presentation.screens.feed.FeedScreen
 import presentation.screens.forgotpassword.ForgotPasswordScreen
 import presentation.screens.login.LoginScreen
 import presentation.screens.splash.SplashScreen
 
 object NavigationRoutes {
+    const val Home: String = "home"
     const val Login = "login"
     const val ForgotPassword = "forgotpassword"
     const val Splash = "splash"
@@ -34,6 +36,10 @@ fun AppTheme() {
             ) {
                 composable(NavigationRoutes.Splash) {
                     SplashScreen(navController)
+                }
+
+                composable(NavigationRoutes.Home) {
+                    FeedScreen(navController)
                 }
 
                 composable(NavigationRoutes.Login) {

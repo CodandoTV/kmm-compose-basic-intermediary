@@ -33,7 +33,7 @@ fun SplashScreen(
         }
 
         if (state.appState == AppState.LoggedIn) {
-            navController.navigate(NavigationRoutes.ForgotPassword)
+            navController.navigate(NavigationRoutes.Home)
         }
     }
 
