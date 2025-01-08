@@ -1,7 +1,31 @@
 import platform.UIKit.UIDevice
+import platform.UIKit.UIApplication
+import platform.UIKit.UIActivityViewController
 
 class IOSPlatform: Platform {
     override val name: String = UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
 }
 
 actual fun getPlatform(): Platform = IOSPlatform()
+
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+actual class ShareManager {
+    actual fun shareText(shareContent: String) {
+        // Cria um array com os itens a serem compartilhados
+        val itemsToShare = listOf(shareContent)
+
+        // Cria o UIActivityViewController com os itens
+        val activityViewController = UIActivityViewController(itemsToShare, null)
+
+        // Obtém o UIViewController atual para apresentar o activityViewController
+        val currentViewController =
+            UIApplication.sharedApplication.keyWindow?.rootViewController ?: return
+
+        // Apresenta o activityViewController no thread principal
+        currentViewController.presentViewController(
+            activityViewController,
+            animated = true,
+            completion = null
+        )
+    }
+}

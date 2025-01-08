@@ -1,5 +1,9 @@
 package presentation.screens.login
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import data.LoginRepository
@@ -17,7 +21,8 @@ data class LoginUIState(
     val textPassword: String = "",
     val isErrorEmail: Boolean = false,
     val isErrorPassword: Boolean = false,
-    val loginResult: LoginResult? = null
+    val loginResult: LoginResult? = null,
+    val goToHome: Boolean = false
 )
 
 sealed class LoginResult(val message: String) {
@@ -26,7 +31,8 @@ sealed class LoginResult(val message: String) {
 }
 
 class LoginViewModel(
-    private val repository: LoginRepository
+    private val repository: LoginRepository,
+    private val dataStore: DataStore<Preferences>
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUIState())
     val uiState: StateFlow<LoginUIState>
@@ -64,8 +70,9 @@ class LoginViewModel(
                     && isValidPassword(uiState.value.textPassword)
 
             val loginResult = if (isValid) {
-                repository.postLogin(uiState.value.textEmail, uiState.value.textPassword)
+//                repository.postLogin(uiState.value.textEmail, uiState.value.textPassword)
                 LoginResult.Success
+
             } else {
                 LoginResult.Error
             }
@@ -76,6 +83,18 @@ class LoginViewModel(
                     loginResult = loginResult
                 )
             }
+
+            if(loginResult is LoginResult.Success) {
+                dataStore.edit {
+                    it[booleanPreferencesKey("isLogged")] = true
+                }
+                _uiState.update {
+                    it.copy(
+                        goToHome = true
+                    )
+                }
+            }
+
         }
     }
 
